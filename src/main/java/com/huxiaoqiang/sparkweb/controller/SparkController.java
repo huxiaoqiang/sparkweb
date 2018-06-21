@@ -47,9 +47,8 @@ public class SparkController {
                 "----outfilePath", outFilePath,
         };
 
-//        SparkSubmit.main(SubmitString);
-
-        return SubmitString.toString();
+        SparkSubmit.main(SubmitString);
+        return null;
     }
 
 
