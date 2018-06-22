@@ -14,12 +14,13 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <p class="navbar-text">Spark分布式挖掘界面</p>
+            <p class="navbar-text"><a href="http://166.111.80.15:8080">任务监控</a></p>
         </div>
     </nav>
 </header>
 
 
-<div id="main-body" class="container" style="margin-top: 80px;">
+<div id="main-body" class="container" style="margin-top: 40px;">
 
     <div id="spark" class="page-header">
         <h1>页面说明</h1>
@@ -30,7 +31,7 @@
 
     <form id="form">
         <div class="form-group">
-            <label for="">请选择挖掘算法</label>
+            <label>请选择挖掘算法</label>
             <div>
                 <select v-model="algorithm">
                     <option disabled value="">请选择挖掘算法</option>
@@ -40,22 +41,22 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="">请输入数据集目录</label>
-            <input type="" class="form-control" id="" placeholder="请输入数据集路径" v-model="input_log">
+            <label>请输入数据集目录</label>
+            <input type="text" class="form-control" placeholder="请输入数据集路径" v-model="input_log">
         </div>
         <div>
-            <label for="">请输入输出目录</label>
-            <input type="" class="form-control" id="" placeholder="请输入输出路径" v-model="output">
+            <label>请输入输出目录</label>
+            <input type="text" class="form-control" placeholder="请输入输出路径" v-model="output">
         </div>
 
         <div class="form-group">
-            <label for="">请配置适当的Spark资源</label>
-            <label for="">executor内存大小/单位G</label>
-            <input type="" class="form-control" id="" placeholder="--executor-memory" v-model="executor_memory">
-            <label for="">驱动程序内存大小/单位G</label>
-            <input type="" class="form-control" id="" placeholder="--driver-memory" v-model="driver_memory">
-            <label for="">执行核数/单位个</label>
-            <input type="" class="form-control" id="" placeholder="total-executor-cores" v-model="total_executor_cores">
+            <label>请配置适当的Spark资源</label>
+            <label>executor内存大小/单位G</label>
+            <input type="text" class="form-control" placeholder="--executor-memory" v-model="executor_memory">
+            <label >驱动程序内存大小/单位G</label>
+            <input type="text" class="form-control" placeholder="--driver-memory" v-model="driver_memory">
+            <label>执行核数/单位个</label>
+            <input type="text" class="form-control" placeholder="total-executor-cores" v-model="total_executor_cores">
         </div>
         <div class="form-group" v-if="seen">
             <label>请配置FHM参数</label>

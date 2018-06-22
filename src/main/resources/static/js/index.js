@@ -12,16 +12,25 @@ $(function () {
         methods: {
             submit: function () {
                 console.log({param: JSON.stringify(this._data)});
-                $.post("/spark/submit", {
-                    param: JSON.stringify(this._data)
-                }, function (resp) {
-                    console.log(resp);
-                });
+                if(this.algorithm === 'alpha'){
+                    $.post("/spark/submit_alpha", {
+                        param: JSON.stringify(this._data)
+                    }, function (resp) {
+                        console.log(resp);
+                    });
+                }
+                else{
+                    $.post("/spark/submit_fhm", {
+                        param: JSON.stringify(this._data)
+                    }, function (resp) {
+                        console.log(resp);
+                    });
+                }
             }
         },
         watch: {
             algorithm: function (val) {
-                if (val == "Spark Aplha Miner") {
+                if (val === "Spark Aplha Miner") {
                     this.seen = false;
                 }
                 else {
