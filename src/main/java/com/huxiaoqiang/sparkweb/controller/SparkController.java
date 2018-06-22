@@ -14,7 +14,7 @@ import java.util.Map;
 @RequestMapping(value = "/spark/")
 public class SparkController {
 
-    private String MASTER = "spark://192.168.3.200:7077";
+    private String Master = "spark://192.168.3.200:7077";
 
 
     @RequestMapping(value = "/submit_alpha", method = {RequestMethod.POST})
@@ -32,7 +32,7 @@ public class SparkController {
         String executorMemory = jsonObject.getString("executor_memory") + "G";
 
         String[] SubmitString = new String[]{
-                "--master", "Master",
+                "--master", Master,
                 "--name", name,
                 "--executor-memory", executorMemory,
                 "--driver-memory", driverMemory,
@@ -73,7 +73,7 @@ public class SparkController {
         String DeltaRel = jsonObject.getString("DeltaRel");
 
         String[] SubmitString = new String[]{
-                "--master", "Master",
+                "--master", Master,
                 "--name", name,
                 "--executor-memory", executorMemory,
                 "--driver-memory", driverMemory,
