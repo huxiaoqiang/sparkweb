@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <start-class>com.example.spark.SparkSubmitApplication</start-class>
+        <start-class>com.huxiaoqiang.sparkweb.SparkwebApplication</start-class>
         <commons.version>3.4</commons.version>
         <org.apache.spark-version>2.2.0</org.apache.spark-version>
     </properties>

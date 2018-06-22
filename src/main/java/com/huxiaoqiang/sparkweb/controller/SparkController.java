@@ -1,16 +1,20 @@
 package com.huxiaoqiang.sparkweb.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.spark.deploy.SparkSubmit;
 import sun.reflect.annotation.ExceptionProxy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/spark/")
 public class SparkController {
 
-    private String MASTER = "spark://166.111.80.15:7077";
+    private String MASTER = "spark://192.168.3.200:7077";
 
 
     @RequestMapping(value = "/submit_alpha", method = {RequestMethod.POST})
@@ -28,14 +32,17 @@ public class SparkController {
         String executorMemory = jsonObject.getString("executor_memory") + "G";
 
         String[] SubmitString = new String[]{
-                "--master", MASTER,
+                "--master", "Master",
                 "--name", name,
                 "--executor-memory", executorMemory,
                 "--driver-memory", driverMemory,
                 "--total-executor-cores", totalExecutorCores,
                 "--class", jarClass,
                 "--jars", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar",
-                jar + " --filePath " + filePath + " --outfilePath " + outFilePath
+                "--driver-library-path", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar",
+                jar,
+                "--filePath", filePath,
+                "--outfilePath", outFilePath
         };
         try {
             SparkSubmit.main(SubmitString);
@@ -47,7 +54,7 @@ public class SparkController {
 
     @RequestMapping(value = "/submit_fhm", method = {RequestMethod.POST})
     @ResponseBody
-    public String submit_fhm(@RequestParam(value = "param") String param) {
+    public Map<String, String> submit_fhm(@RequestParam(value = "param") String param) {
         JSONObject jsonObject = JSONObject.parseObject(param);
 
         String name = "Spark Flexible Heuristic Miner";
@@ -66,22 +73,32 @@ public class SparkController {
         String DeltaRel = jsonObject.getString("DeltaRel");
 
         String[] SubmitString = new String[]{
-                "--master", MASTER,
+                "--master", "Master",
                 "--name", name,
                 "--executor-memory", executorMemory,
                 "--driver-memory", driverMemory,
                 "--total-executor-cores", totalExecutorCores,
                 "--class", jarClass,
-                "--jars", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar " + jar,
+                "--jars", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar",
+                "--driver-library-path", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar",
+                jar,
                 "--filePath", filePath,
-                "----outfilePath", outFilePath,
+                "--outfilePath", outFilePath,
                 "--conf", "DeltaA=" + DeltaA,
                 "--conf", "DeltaL1L=" + DeltaL1L,
                 "--conf", "DeltaL2L=" + DeltaL2L,
                 "--conf", "DeltaLong=" + DeltaLong,
                 "--conf", "DeltaRel=" + DeltaRel
         };
-        SparkSubmit.main(SubmitString);
-        return "success";
+        Map<String, String> result = new HashMap<>();
+        try {
+            SparkSubmit.main(SubmitString);
+            result.put("status", "succes");
+        } catch (Exception e) {
+
+            result.put("status", "failed");
+            result.put("errorMsg", e.getMessage());
+        }
+        return result;
     }
 }
