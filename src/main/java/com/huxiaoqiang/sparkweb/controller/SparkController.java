@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.spark.deploy.SparkSubmit;
+import sun.reflect.annotation.ExceptionProxy;
 
 @RestController
 @RequestMapping(value = "/spark/")
@@ -33,11 +34,14 @@ public class SparkController {
                 "--driver-memory", driverMemory,
                 "--total-executor-cores", totalExecutorCores,
                 "--class", jarClass,
-                "--jars", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar " + jar,
-                "--filePath", filePath,
-                "----outfilePath", outFilePath,
+                "--jars", "/home/ubuntu/.m2/repository/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar",
+                jar + " --filePath " + filePath + " --outfilePath " + outFilePath
         };
-        SparkSubmit.main(SubmitString);
+        try {
+            SparkSubmit.main(SubmitString);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return "success";
     }
 
