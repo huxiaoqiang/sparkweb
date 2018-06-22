@@ -1,11 +1,9 @@
 package com.huxiaoqiang.sparkweb.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.spark.deploy.SparkSubmit;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +17,7 @@ public class SparkController {
 
     @RequestMapping(value = "/submit_alpha", method = {RequestMethod.POST})
     @ResponseBody
-    public String submit_alpha(@RequestParam(value = "param") String param) {
+    public Map<String, String>  submit_alpha(@RequestParam(value = "param") String param) {
         JSONObject jsonObject = JSONObject.parseObject(param);
 
         String name = "Spark Alpha Miner";
@@ -32,7 +30,7 @@ public class SparkController {
         String executorMemory = jsonObject.getString("executor_memory") + "G";
 
         String[] SubmitString = new String[]{
-                "--master", "Master",
+                "--master", MASTER,
                 "--name", name,
                 "--executor-memory", executorMemory,
                 "--driver-memory", driverMemory,
@@ -44,12 +42,16 @@ public class SparkController {
                 "--filePath", filePath,
                 "--outfilePath", outFilePath
         };
+        Map<String, String> result = new HashMap<>();
         try {
             SparkSubmit.main(SubmitString);
+            result.put("status", "success");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            result.put("status", "failed");
+            result.put("errorMsg", e.getMessage());
         }
-        return "success";
+        return result;
     }
 
     @RequestMapping(value = "/submit_fhm", method = {RequestMethod.POST})
@@ -93,9 +95,8 @@ public class SparkController {
         Map<String, String> result = new HashMap<>();
         try {
             SparkSubmit.main(SubmitString);
-            result.put("status", "succes");
+            result.put("status", "success");
         } catch (Exception e) {
-
             result.put("status", "failed");
             result.put("errorMsg", e.getMessage());
         }
