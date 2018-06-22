@@ -12,7 +12,7 @@ $(function () {
         methods: {
             submit: function () {
                 console.log({param: JSON.stringify(this._data)});
-                if(this.algorithm === 'alpha'){
+                if(this.algorithm === 'Spark Aplha Miner'){
                     $.post("/spark/submit_alpha", {
                         param: JSON.stringify(this._data)
                     }, function (resp) {
